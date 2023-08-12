@@ -5,10 +5,12 @@ import { useParams } from "react-router-dom";
 const ProductDetails = () => {
     const { data } = useData();
     const { id } = useParams();
-    const [product, setProduct] = useState(null); // Initialize product as null
+    const [product, setProduct] = useState(null);
 
     useEffect(() => {
-        const productDetail = data.find((item) => item.id === Number(id));
+        const productDetail = data.find(
+            (item) => item.id === Number(id) || item.id === id
+        );
         setProduct(productDetail);
     }, [data, id]);
 
@@ -24,11 +26,15 @@ const ProductDetails = () => {
                     />
                     <h1 className="mb-2 text-2xl font-bold tracking-tight">
                         Price:{" "}
-                        <span className="text-neutral-800">${product.price}</span>
+                        <span className="text-neutral-800">
+                            ${product.price}
+                        </span>
                     </h1>
                     <h1 className="mb-2 text-2xl font-bold tracking-tight">
                         Stock:{" "}
-                        <span className="text-neutral-800">{product.stock}</span>
+                        <span className="text-neutral-800">
+                            {product.stock}
+                        </span>
                     </h1>
                     <h1 className="mb-2 text-2xl font-bold tracking-tight">
                         Supplier:{" "}

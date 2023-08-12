@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useData } from "../context/DataContext";
+import { v4 as uuidv4 } from "uuid";
 
 const AddANewProduct = () => {
     const { addNewData } = useData();
     const [selectedDepartment, setSelectedDepartment] =
         useState("Select Department");
     const [newProductData, setNewProductData] = useState({
+        id: uuidv4(),
         department: "",
         name: "",
         description: "",
@@ -45,9 +47,16 @@ const AddANewProduct = () => {
             return;
         }
 
-        addNewData(newProductData);
+        const newProduct = {
+            ...newProductData,
+            id: uuidv4(),
+            department: selectedDepartment,
+        };
+
+        addNewData(newProduct);
 
         setNewProductData({
+            id: uuidv4(),
             department: "",
             name: "",
             description: "",
@@ -82,6 +91,7 @@ const AddANewProduct = () => {
                     </h1>
                     <select
                         id="department"
+                        name="department"
                         value={selectedDepartment}
                         onChange={handleDepartmentChange}
                         className="mb-2 text-xl font-bold tracking-tight text-gray-700 rounded p-2 border"
