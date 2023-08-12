@@ -1,11 +1,63 @@
 import React, { useEffect, useState } from "react";
+import { useData } from "../context/DataContext";
 
 const AddANewProduct = () => {
+    const { addNewData } = useData();
     const [selectedDepartment, setSelectedDepartment] =
         useState("Select Department");
+    const [newProductData, setNewProductData] = useState({
+        department: "",
+        name: "",
+        description: "",
+        price: 0,
+        stock: 0,
+        sku: "",
+        supplier: "",
+        delivered: 0,
+        imageUrl: "",
+    });
 
     const handleDepartmentChange = (e) => {
         setSelectedDepartment(e.target.value);
+    };
+
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setNewProductData((prevData) => ({
+            ...prevData,
+            [name]: value,
+        }));
+    };
+
+    const handleAddProduct = (e) => {
+        e.preventDefault();
+        if (
+            !selectedDepartment ||
+            !newProductData.name ||
+            !newProductData.description ||
+            !newProductData.price ||
+            !newProductData.stock ||
+            !newProductData.sku ||
+            !newProductData.supplier ||
+            !newProductData.delivered ||
+            !newProductData.imageUrl
+        ) {
+            return;
+        }
+
+        addNewData(newProductData);
+
+        setNewProductData({
+            department: "",
+            name: "",
+            description: "",
+            price: 0,
+            stock: 0,
+            sku: "",
+            supplier: "",
+            delivered: 0,
+            imageUrl: "",
+        });
     };
 
     const [departmentError, setDepartmentError] = useState(null);
@@ -20,7 +72,7 @@ const AddANewProduct = () => {
 
     return (
         <div>
-            <form className="p-12">
+            <form className="p-12" onSubmit={handleAddProduct}>
                 <h1 className="mb-2 text-2xl font-bold tracking-tight text-gray-900">
                     Add a new Product
                 </h1>
@@ -51,7 +103,9 @@ const AddANewProduct = () => {
                         type="text"
                         id="name"
                         name="name"
-                        class="block w-full p-4 pl-10 text-sm text-gray-900 rounded border required"
+                        value={newProductData.name}
+                        onChange={handleInputChange}
+                        className="block w-full p-4 text-sm text-gray-900 rounded border required"
                     />
                     <h1 className="mb-2 text-md font-semibold tracking-tight text-gray-900 pt-3">
                         Description <span className="text-red-700">*</span>
@@ -60,7 +114,9 @@ const AddANewProduct = () => {
                         type="text"
                         id="description"
                         name="description"
-                        class="block w-full p-4 pl-10 text-sm text-gray-900 rounded border required"
+                        value={newProductData.description}
+                        onChange={handleInputChange}
+                        className="block w-full p-4 text-sm text-gray-900 rounded border required"
                     />
                     <h1 className="mb-2 text-md font-semibold tracking-tight text-gray-900 pt-3">
                         Price <span className="text-red-700">*</span>
@@ -69,9 +125,72 @@ const AddANewProduct = () => {
                         type="number"
                         id="price"
                         name="price"
-                        class="block w-full p-4 pl-10 text-sm text-gray-900 rounded border required"
+                        value={newProductData.price}
+                        onChange={handleInputChange}
+                        className="block w-full p-4 text-sm text-gray-900 rounded border required"
+                    />
+                    <h1 className="mb-2 text-md font-semibold tracking-tight text-gray-900 pt-3">
+                        Stock <span className="text-red-700">*</span>
+                    </h1>
+                    <input
+                        type="number"
+                        id="stock"
+                        name="stock"
+                        value={newProductData.stock}
+                        onChange={handleInputChange}
+                        className="block w-full p-4 text-sm text-gray-900 rounded border required"
+                    />
+                    <h1 className="mb-2 text-md font-semibold tracking-tight text-gray-900 pt-3">
+                        SKU <span className="text-red-700">*</span>
+                    </h1>
+                    <input
+                        type="text"
+                        id="sku"
+                        name="sku"
+                        value={newProductData.sku}
+                        onChange={handleInputChange}
+                        className="block w-full p-4 text-sm text-gray-900 rounded border required"
+                    />
+                    <h1 className="mb-2 text-md font-semibold tracking-tight text-gray-900 pt-3">
+                        Supplier <span className="text-red-700">*</span>
+                    </h1>
+                    <input
+                        type="text"
+                        id="supplier"
+                        name="supplier"
+                        value={newProductData.supplier}
+                        onChange={handleInputChange}
+                        className="block w-full p-4 text-sm text-gray-900 rounded border required"
+                    />
+                    <h1 className="mb-2 text-md font-semibold tracking-tight text-gray-900 pt-3">
+                        Delivered <span className="text-red-700">*</span>
+                    </h1>
+                    <input
+                        type="number"
+                        id="delivered"
+                        name="delivered"
+                        value={newProductData.delivered}
+                        onChange={handleInputChange}
+                        className="block w-full p-4 text-sm text-gray-900 rounded border required"
+                    />
+                    <h1 className="mb-2 text-md font-semibold tracking-tight text-gray-900 pt-3">
+                        Image URL <span className="text-red-700">*</span>
+                    </h1>
+                    <input
+                        type="text"
+                        id="imageUrl"
+                        name="imageUrl"
+                        value={newProductData.imageUrl}
+                        onChange={handleInputChange}
+                        className="block w-full p-4 text-sm text-gray-900 rounded border required"
                     />
                 </div>
+                <button
+                    type="submit"
+                    className="bg-blue-600 text-white px-5 py-3 mt-5 rounded"
+                >
+                    Add Product
+                </button>
             </form>
         </div>
     );
